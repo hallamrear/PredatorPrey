@@ -12,6 +12,7 @@
 //if predator goes onto prey they reproduce
 //heals using prey health
 
+#include <Windows.h>
 #include "SDL.h"
 #include "imgui.h"
 #include "imgui_impl_sdl.h"
@@ -26,9 +27,9 @@ private:
 	SDL_Window*				mWindow;
 	SDL_Renderer*			mRenderer;
 
-	void CreateWindow();
-	void CreateGUI();
-
+	void InitWindow();
+	void InitGUI();
+	void Cleanup();
 	void Update_UI();
 	void Draw_UI();
 
@@ -43,6 +44,6 @@ public:
 	void Update();
 	void Draw();
 
-	const bool const IsRunning();
+	bool IsRunning();
 };
 

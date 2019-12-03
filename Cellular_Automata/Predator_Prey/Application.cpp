@@ -1,6 +1,6 @@
 #include "Application.h"
 
-int main()
+int main(int argc, char* argv[] )
 {
 	Application* app;
 	app = new Application();
@@ -21,59 +21,73 @@ int main()
 	return 0;
 }
 
-void Application::CreateWindow()
+void Application::InitWindow()
 {
 	if (SDL_Init(SDL_INIT_EVERYTHING) == 0)
 	{
 		Uint32 windowFlags = SDL_WINDOW_SHOWN;
 
+		
 		SDL_CreateWindowAndRenderer(WINDOW_WIDTH, WINDOW_HEIGHT, windowFlags, &mWindow, &mRenderer);
 
-		CreateGUI();
+		InitGUI();
 	}
 }
 
-void Application::CreateGUI()
+void Application::InitGUI()
 {
-	IMGUI_CHECKVERSION();
-	ImGui::CreateContext();
+	//IMGUI_CHECKVERSION();
+	//ImGui::CreateContext();
 	//ImGui_ImplSDL2_InitForOpenGL(mWindow);
+	//ImGuiIO& io = ImGui::GetIO(); (void)io;
+	//io.WantTextInput = true;
+	//io.WantCaptureMouse = true;
+	//io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;
+	//ImGui::StyleColorsDark();
+}
 
-	ImGuiIO& io = ImGui::GetIO(); (void)io;
-	io.WantTextInput = true;
-	io.WantCaptureMouse = true;
-	io.ConfigFlags |= ImGuiConfigFlags_NavEnableKeyboard;     // Enable Keyboard Controls
+void Application::Cleanup()
+{
+	SDL_DestroyRenderer(mRenderer);
+	SDL_DestroyWindow(mWindow);
+	SDL_Quit();
 
-	ImGui::StyleColorsDark();
+	bIsRunning = false;
 }
 
 
 Application::Application()
 {
 	bIsRunning = false;
-
 }
 
 Application::~Application()
 {
-
+	Cleanup();
 }
 
 void Application::Start()
 {
-	bIsRunning = true;
+	if (!bIsRunning)
+	{
+		InitWindow();
+		bIsRunning = true;
+	}
 }
 
 void Application::Stop()
 {
-	bIsRunning = false;
+	if (bIsRunning)
+	{
+		bIsRunning = false;
+		Cleanup();
+	}
 }
 
-bool const Application::IsRunning()
+bool Application::IsRunning()
 {
 	return bIsRunning;
 }
-
 
 void Application::PollEvents()
 {
@@ -82,7 +96,8 @@ void Application::PollEvents()
 
 	switch (e.type)
 	{
-
+	default:
+		break;
 	}
 }
 
@@ -100,8 +115,12 @@ void Application::Update_UI()
 
 void Application::Draw()
 {
+	SDL_SetRenderDrawColor(mRenderer, 0, 0, 0, 255);
+	SDL_RenderClear(mRenderer);
+
 
 	Draw_UI();
+	SDL_RenderPresent(mRenderer);
 }
 
 void Application::Draw_UI()
