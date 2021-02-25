@@ -18,24 +18,32 @@
 #include "imgui_impl_sdl.h"
 #include "Vector2.h"
 
-#define WINDOW_WIDTH 800
-#define WINDOW_HEIGHT 600
-
-#define CELL_COUNT_X 100 
-#define CELL_COUNT_Y 75 
+#define WINDOW_WIDTH  800
+#define WINDOW_HEIGHT 800
+#define CELL_COUNT_X  200
+#define CELL_COUNT_Y  200
+#define CELL_RECT_WIDTH (WINDOW_WIDTH / CELL_COUNT_X)
+#define CELL_RECT_HEIGHT (WINDOW_HEIGHT / CELL_COUNT_Y)
 
 class Application
 {
 private:
-	bool					bIsRunning;
-	SDL_Window*				mWindow;
-	SDL_Renderer*			mRenderer;
-	class Cell***			mCells;
+	int								mGenerationCount;
+	int								mPredCount;
+	int								mPreyCount;
+	bool							bIsRunning;
+	bool							bIsPaused;
+	SDL_Window*						mWindow;
+	SDL_Renderer*					mRenderer;
+	class Cell***					mCells;
 
 	void InitWindow();
 	void InitGUI();
+	void InitConsole();
 	void CreateObjects();
 	void Cleanup();
+
+	void ClearCells();
 
 	void Update_UI();
 	void Draw_UI();
